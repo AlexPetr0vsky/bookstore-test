@@ -16,10 +16,3 @@ class BookResponse:
     description: str
     icon_book: str
     author_id: int
-
-@dataclass
-class AuthorResponse:
-    id: int
-    name: str
-    photo: Optional[str] = None
-    wiki: Optional[str] = None
