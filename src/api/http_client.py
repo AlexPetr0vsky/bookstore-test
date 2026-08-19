@@ -41,6 +41,25 @@ class HTTPClient:
             data=BookResponse(**response.json())
         )
 
+
+    def patch_book(self, book_id: int, data: Dict[str, Any]) -> ApiResponse:
+        response = self._request("PATCH", f"books/{book_id}", json=data)
+        return ApiResponse(
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            data=BookResponse(**response.json())
+        )
+
+
+    def put_book(self, book_id: int, data: Dict[str, Any]) -> ApiResponse:
+        response = self._request("PUT", f"books/{book_id}", json=data)
+        return ApiResponse(
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            data=BookResponse(**response.json())
+        )
+
+
     def delete_book(self, book_id: int) -> ApiResponse:
         response = self._request("DELETE", f"books/{book_id}")
         return ApiResponse(

@@ -4,12 +4,9 @@ from conftest import BookFactory
 
 
 class TestCreateBook:
-    def test_create_book(self, api_client, cleanup):
+    def test_create_book(self, api_client):
         payload = BookFactory.create_payload()
         response = api_client.post_book(data=payload)
-        book_id = response.data.id
-        author_id = response.data.author_id
-        cleanup(book_id, author_id)
 
         check.equal(response.status_code, 201)
         check.equal(response.data.book, payload.get("book"))
