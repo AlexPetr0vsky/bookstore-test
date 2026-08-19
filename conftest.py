@@ -33,10 +33,10 @@ def cleanup_old_test_authors(api_client):
         response = api_client.get_authors()
         if response.status_code != 200:
             return
-        for author in response.data:
-            if author["name"] == "Test Author":
-                api_client.delete_author(author["id"])
-                logger.info(f"Deleted author {author['id']} and their books")
+        for author in response.data.authors:
+            if author.name == "Test Author":
+                api_client.delete_author(author.id)
+                logger.info(f"Deleted test author {author.id}")
 
     delete_test_authors()
     yield
