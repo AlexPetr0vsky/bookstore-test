@@ -4,7 +4,7 @@ from conftest import BookFactory
 
 
 class TestPatchBook:
-    def test_patch_book(self, api_client):
+    def test_patch_book_200ok(self, api_client):
         payload = BookFactory.create_payload()
         response = api_client.post_book(data=payload)
         book_id = response.data.id

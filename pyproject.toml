@@ -17,4 +17,5 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "pytest-check>=2.8.0",
     "allure-python-commons>=2.16.0",
+    "faker>=40.36.0",
 ]

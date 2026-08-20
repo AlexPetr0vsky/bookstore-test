@@ -1,6 +1,7 @@
 import requests
-from typing import Any, Dict, Optional
-from src.models.response_models import BookResponse, ApiResponse, BookListResponse, AuthorListResponse, AuthorResponse
+from typing import Any, Dict
+from src.models.response_models import BookResponse, ApiResponse, BookListResponse, AuthorListResponse, AuthorResponse, \
+    GeneralErrorResponse
 
 
 class HTTPClient:
@@ -35,6 +36,14 @@ class HTTPClient:
 
     def post_book(self, data: Dict[str, Any]) -> ApiResponse:
         response = self._request("POST", "books", json=data)
+
+        if response.status_code != 201:
+            return ApiResponse(
+                status_code=response.status_code,
+                headers=dict(response.headers),
+                data=GeneralErrorResponse(**response.json()) if response.text else None
+            )
+
         return ApiResponse(
             status_code=response.status_code,
             headers=dict(response.headers),

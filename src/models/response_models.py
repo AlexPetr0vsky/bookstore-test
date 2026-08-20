@@ -34,3 +34,10 @@ class AuthorResponse:
 @dataclass
 class AuthorListResponse:
     authors: List[AuthorResponse]
+
+
+@dataclass
+class GeneralErrorResponse:
+    error: str
+    message: Optional[str] = None
+    
