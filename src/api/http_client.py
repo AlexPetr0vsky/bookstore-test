@@ -28,6 +28,14 @@ class HTTPClient:
 
     def get_book(self, book_id: int) -> ApiResponse:
         response = self._request("GET", f"books/{book_id}")
+
+        if response.status_code != 200:
+            return ApiResponse(
+                status_code=response.status_code,
+                headers=dict(response.headers),
+                data=GeneralErrorResponse(**response.json()) if response.text else None
+            )
+
         return ApiResponse(
             status_code=response.status_code,
             headers=dict(response.headers),
@@ -53,6 +61,14 @@ class HTTPClient:
 
     def patch_book(self, book_id: int, data: Dict[str, Any]) -> ApiResponse:
         response = self._request("PATCH", f"books/{book_id}", json=data)
+
+        if response.status_code != 200:
+            return ApiResponse(
+                status_code=response.status_code,
+                headers=dict(response.headers),
+                data=GeneralErrorResponse(**response.json()) if response.text else None
+            )
+
         return ApiResponse(
             status_code=response.status_code,
             headers=dict(response.headers),
@@ -62,6 +78,14 @@ class HTTPClient:
 
     def put_book(self, book_id: int, data: Dict[str, Any]) -> ApiResponse:
         response = self._request("PUT", f"books/{book_id}", json=data)
+
+        if response.status_code != 200:
+            return ApiResponse(
+                status_code=response.status_code,
+                headers=dict(response.headers),
+                data=GeneralErrorResponse(**response.json()) if response.text else None
+            )
+
         return ApiResponse(
             status_code=response.status_code,
             headers=dict(response.headers),
@@ -71,6 +95,14 @@ class HTTPClient:
 
     def delete_book(self, book_id: int) -> ApiResponse:
         response = self._request("DELETE", f"books/{book_id}")
+
+        if response.status_code != 204:
+            return ApiResponse(
+                status_code=response.status_code,
+                headers=dict(response.headers),
+                data=GeneralErrorResponse(**response.json()) if response.text else None
+            )
+
         return ApiResponse(
             status_code=response.status_code,
             headers=dict(response.headers),
@@ -80,6 +112,14 @@ class HTTPClient:
 
     def get_authors(self) -> ApiResponse:
         response = self._request("GET", "authors")
+
+        if response.status_code != 200:
+            return ApiResponse(
+                status_code=response.status_code,
+                headers=dict(response.headers),
+                data=GeneralErrorResponse(**response.json()) if response.text else None
+            )
+
         data = response.json()
         return ApiResponse(
             status_code=response.status_code,
@@ -89,6 +129,14 @@ class HTTPClient:
 
     def get_author(self, author_id: int) -> ApiResponse:
         response = self._request("GET", f"authors/{author_id}")
+
+        if response.status_code != 200:
+            return ApiResponse(
+                status_code=response.status_code,
+                headers=dict(response.headers),
+                data=GeneralErrorResponse(**response.json()) if response.text else None
+            )
+
         return ApiResponse(
             status_code=response.status_code,
             headers=dict(response.headers),
@@ -97,6 +145,14 @@ class HTTPClient:
 
     def delete_author(self, author_id: int) -> ApiResponse:
         response = self._request("DELETE", f"authors/{author_id}")
+
+        if response.status_code != 204:
+            return ApiResponse(
+                status_code=response.status_code,
+                headers=dict(response.headers),
+                data=GeneralErrorResponse(**response.json()) if response.text else None
+            )
+
         return ApiResponse(
             status_code=response.status_code,
             headers=dict(response.headers),

@@ -1,10 +1,12 @@
-from random import randint
+from typing import Any, Callable, Generator, Dict
 
 import pytest
 import logging
 from src.api.config import api_config
 from src.api.http_client import HTTPClient
 from faker import Faker
+
+
 fake = Faker()
 
 logger = logging.getLogger(__name__)
@@ -12,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class BookFactory:
     @staticmethod
-    def create_payload(**kwargs):
+    def create_payload(**kwargs) -> Dict[str, Any]:
         return {
             "book": kwargs.get('book') or fake.word() + " " + fake.word(),
             "name": kwargs.get('name') or fake.name(),
@@ -28,7 +30,7 @@ def api_client():
 
 
 @pytest.fixture(autouse=True)
-def clean_db(api_client):
+def clean_db(api_client: HTTPClient) -> Generator[None, Any, None]:
     yield
     books_response = api_client.get_books()
     for book in books_response.data.books:
@@ -42,9 +44,9 @@ def clean_db(api_client):
 
 
 @pytest.fixture(scope="function")
-def create_books(api_client: HTTPClient):
+def create_books(api_client: HTTPClient) -> Callable[..., list[Any]]:
     def _create_books(count: int = 1):
-        for _ in range(count):
-            api_client.post_book(BookFactory.create_payload())
+        books = [api_client.post_book(BookFactory.create_payload()).data for _ in range(count)]
+        return books
 
     return _create_books

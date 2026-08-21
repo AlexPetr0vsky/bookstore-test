@@ -6,13 +6,13 @@ from conftest import BookFactory
 @allure.epic("Bookstore API")
 @allure.story("Create Book")
 class TestCreateBook:
-    @allure.title("Sending POST request and getting 200 response")
+    @allure.title("Sending POST request and getting 201 response")
     def test_create_book_1(self, api_client):
         with allure.step("Create Book"):
             payload = BookFactory.create_payload()
             response = api_client.post_book(data=payload)
 
-        with allure.step("Checking response with 200"):
+        with allure.step("Checking response with 201"):
             check.equal(response.status_code, 201)
             check.equal(response.data.book, payload.get("book"))
             check.equal(response.data.icon_book, payload.get("icon_book"))

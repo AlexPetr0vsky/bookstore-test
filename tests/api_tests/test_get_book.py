@@ -2,56 +2,65 @@ from random import randint
 import allure
 import pytest_check as check
 
-from conftest import BookFactory
-
 
 @allure.epic("Bookstore API")
 @allure.story("Get book")
 class TestGetBooks:
+    BOOKS_COUNT = 5
+
     @allure.title("Sending GET request to get list of books, getting 200 response")
     def test_get_books_1(self, api_client, create_books):
         with allure.step("Create Book"):
-            create_books(count=5)
+            created_books = create_books(count=self.BOOKS_COUNT)
 
-        with allure.step("Sending get books request"):
-            response = api_client.get_books()
-            print(response)
-        # with allure.step("Checking response with 200"):
-        #     check.equal(response.status_code, 200)
-        #     check.is_not_none(response.data)
-        #     for item in range(len(response.data.books)):
-        #         check.is_not_none(response.data.books[item].id)
-        #         check.is_not_none(response.data.books[item].book)
-        #         check.is_not_none(response.data.books[item].description)
-        #         check.is_not_none(response.data.books[item].author_id)
-        #         check.is_not_none(response.data.books[item].icon_book)
-
-    @allure.title("Sending GET request to get list of books, getting 200 response")
-    def test_get_books_2(self, api_client):
         with allure.step("Sending get books request"):
             response = api_client.get_books()
 
         with allure.step("Checking response with 200"):
             check.equal(response.status_code, 200)
-            check.is_not_none(response.data)
+
+            check.equal(len(response.data.books), len(created_books))
             for item in range(len(response.data.books)):
-                check.is_not_none(response.data.books[item].id)
-                check.is_not_none(response.data.books[item].book)
-                check.is_not_none(response.data.books[item].description)
-                check.is_not_none(response.data.books[item].author_id)
-                check.is_not_none(response.data.books[item].icon_book)
+                check.equal(response.data.books[item].id, created_books[item].id)
+                check.equal(response.data.books[item].book, created_books[item].book)
+                check.equal(response.data.books[item].description, created_books[item].description)
+                check.equal(response.data.books[item].author_id, created_books[item].author_id)
+                check.equal(response.data.books[item].icon_book, created_books[item].icon_book)
+
 
 @allure.epic("Bookstore API")
 @allure.story("Get book")
 class TestGetBook:
-    def test_get_book_1(self, api_client):
-        books_response = api_client.get_books()
-        book_id = randint(1, len(books_response.data.books))
-        response = api_client.get_book(book_id)
+    BOOKS_COUNT = 5
 
-        check.equal(response.status_code, 200)
-        check.equal(response.data.id, book_id)
-        check.is_not_none(response.data.book)
-        check.is_not_none(response.data.author_id)
-        check.is_not_none(response.data.icon_book)
-        check.is_not_none(response.data.description)
+    @allure.title("Sending GET request to get a book by id, getting 200 response")
+    @allure.epic("Bookstore API")
+    def test_get_book_1(self, api_client, create_books):
+        with allure.step("Create books"):
+            books = create_books(count=self.BOOKS_COUNT)
+            book = books[randint(1, self.BOOKS_COUNT) - 1]
+
+        with allure.step("Sending get books request"):
+            response = api_client.get_book(book_id=book.id)
+
+        with allure.step("Checking response with 200"):
+            check.equal(response.status_code, 200)
+            check.equal(response.data.id, book.id)
+            check.equal(response.data.book, book.book)
+            check.equal(response.data.author_id, book.author_id)
+            check.equal(response.data.icon_book, book.icon_book)
+            check.equal(response.data.description, book.description)
+
+    @allure.title("Sending GET request to get a book by wrong id, getting 404 response")
+    @allure.epic("Bookstore API")
+    def test_get_book_2(self, api_client, create_books):
+        with allure.step("Create books"):
+            created_books = create_books(count=self.BOOKS_COUNT)
+            check.greater(len(created_books), 0)
+
+        with allure.step("Sending get books request"):
+            response = api_client.get_book(book_id=self.BOOKS_COUNT+1)
+
+        with allure.step("Checking response with 404"):
+            check.equal(response.status_code, 404)
+            check.equal(response.data.error, "Book not found")
