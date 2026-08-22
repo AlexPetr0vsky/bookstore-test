@@ -4,17 +4,19 @@ import allure
 import pytest_check as check
 from conftest import BookFactory
 
+BOOKS_COUNT = 5
+
 
 @allure.epic("Bookstore API")
 @allure.story("Put book")
 class TestPutBook:
-    BOOKS_COUNT = 5
+
 
     @allure.title("Sending PUT request to patch book by id, getting 200 response")
     def test_put_book_1(self, api_client, create_books):
         with allure.step("Create books"):
-            books = create_books(count=self.BOOKS_COUNT)
-            book = books[randint(1, self.BOOKS_COUNT) - 1]
+            books = create_books(count=BOOKS_COUNT)
+            book = books[randint(1, BOOKS_COUNT) - 1]
 
         with allure.step("Create new payload"):
             payload = BookFactory.create_payload(
@@ -39,12 +41,12 @@ class TestPutBook:
     @allure.title("Sending PUT request with wrong id, getting 404 response")
     def test_put_book_2(self, api_client, create_books):
         with allure.step("Create books"):
-            created_books = create_books(count=self.BOOKS_COUNT)
+            created_books = create_books(count=BOOKS_COUNT)
             check.greater(len(created_books), 0)
 
         with allure.step("Sending put request"):
             put_payload = BookFactory.create_payload()
-            response = api_client.put_book(book_id=self.BOOKS_COUNT+1, data=put_payload)
+            response = api_client.put_book(book_id=BOOKS_COUNT+1, data=put_payload)
 
         with allure.step("Checking response with 404"):
             check.equal(response.status_code, 404)

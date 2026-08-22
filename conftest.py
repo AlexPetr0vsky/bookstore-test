@@ -1,28 +1,13 @@
-from typing import Any, Callable, Generator, Dict
+from typing import Any, Callable, Generator
 
 import pytest
 import logging
 from src.api.config import api_config
 from src.api.http_client import HTTPClient
-from faker import Faker
-
-
-fake = Faker()
+from src.utils.factory import BookFactory
 
 logger = logging.getLogger(__name__)
 
-
-class BookFactory:
-    @staticmethod
-    def create_payload(**kwargs) -> Dict[str, Any]:
-        return {
-            "book": kwargs.get('book') or fake.word() + " " + fake.word(),
-            "name": kwargs.get('name') or fake.name(),
-            "photo": kwargs.get('photo', "http://example.com/photo.jpg"),
-            "wiki": kwargs.get('wiki', "http://example.com/wiki"),
-            "description": kwargs.get('description', fake.sentence()),
-            "icon_book": kwargs.get('icon_book', "http://example.com/icon.jpg")
-        }
 
 @pytest.fixture(scope="session")
 def api_client():
