@@ -158,3 +158,36 @@ class HTTPClient:
             headers=dict(response.headers),
             data=None
         )
+
+    def register(self, username: str, password: str, email: str = "") -> ApiResponse:
+        payload = {
+            "username": username,
+            "password": password,
+            "email": email
+        }
+        response = self._request("POST", "register", json=payload)
+        return ApiResponse(
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            data=response.json() if response.text else None
+        )
+
+    def login(self, username: str, password: str) -> ApiResponse:
+        payload = {
+            "username": username,
+            "password": password
+        }
+        response = self._request("POST", "login", json=payload)
+        return ApiResponse(
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            data=response.json() if response.text else None
+        )
+
+    def logout(self) -> ApiResponse:
+        response = self._request("POST", "logout")
+        return ApiResponse(
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            data=response.json() if response.text else None
+        )
