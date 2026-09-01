@@ -1,5 +1,7 @@
 import allure
 from playwright.sync_api import Page
+
+from src.config.const import Selector
 from .base_page import BasePage
 
 
@@ -18,3 +20,6 @@ class MainPage(BasePage):
         with allure.step("Click button to search"):
             self.page.click("button[type='submit']")
             return self
+
+    def get_book_cards(self):
+        return self.page.locator(".product")

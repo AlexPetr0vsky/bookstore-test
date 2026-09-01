@@ -14,6 +14,10 @@ class BasePage:
         with allure.step("Get title of page"):
             return self.page.title()
 
-    def should_have_title(self, title):
-        with allure.step("Check if title is equal to '{}'".format(title)):
-            return expect(self.page).to_have_title(title)
+    def should_contain_text(self, selector: str, expected_text: str):
+        with allure.step(f"Check if '{selector}' contains text '{expected_text}'"):
+            return expect(self.page.locator(selector)).to_contain_text(expected_text)
+
+    def should_have_url(self, url):
+        with allure.step("Check if url is equal to '{}'".format(url)):
+            return expect(self.page).to_have_url(url)
