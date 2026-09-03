@@ -40,4 +40,10 @@ class AuthorListResponse:
 class GeneralErrorResponse:
     error: str
     message: Optional[str] = None
-    
+
+
+@dataclass
+class UserResponse:
+    id: int
+    username: str
+    email: str
