@@ -16,7 +16,8 @@ class BookFactory:
             "photo": kwargs.get('photo', "http://example.com/photo.jpg"),
             "wiki": kwargs.get('wiki', "http://example.com/wiki"),
             "description": kwargs.get('description', fake.sentence()),
-            "icon_book": kwargs.get('icon_book', "http://example.com/icon.jpg")
+            "icon_book": kwargs.get('icon_book', "http://example.com/icon.jpg"),
+            "stock": kwargs.get('stock', 10)
         }
 
 

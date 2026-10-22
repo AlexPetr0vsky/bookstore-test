@@ -16,6 +16,7 @@ class BookResponse:
     description: str
     icon_book: str
     author_id: int
+    stock: int
 
 
 @dataclass
@@ -55,9 +56,3 @@ class OrderResponse:
     book_id: int
     quantity: int
     status: str
-
-
-@dataclass
-class InventoryResponse:
-    book_id: int
-    quantity: int

@@ -18,12 +18,6 @@ def api_client():
 def clean_db(api_client: HTTPClient) -> Generator[None, Any, None]:
     yield
 
-    try:
-        api_client.clear_inventory()
-        logger.info("Inventory cleared")
-    except Exception as e:
-        logger.error(f"Failed to clear inventory: {e}")
-
     books_response = api_client.get_books()
     for book in books_response.data.books:
         api_client.delete_book(book.id)

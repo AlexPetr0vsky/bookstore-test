@@ -4,7 +4,7 @@ from dataclasses import asdict
 import requests
 from typing import Any, Dict
 from src.models.response_models import BookResponse, ApiResponse, BookListResponse, AuthorListResponse, AuthorResponse, \
-    GeneralErrorResponse, UserResponse, OrderResponse, InventoryResponse
+    GeneralErrorResponse, UserResponse, OrderResponse
 
 
 class HTTPClient:
@@ -227,14 +227,6 @@ class HTTPClient:
 
     def logout(self) -> ApiResponse:
         response = self._request("POST", "logout")
-        return ApiResponse(
-            status_code=response.status_code,
-            headers=dict(response.headers),
-            data=response.json() if response.text else None
-        )
-
-    def clear_inventory(self) -> ApiResponse:
-        response = self._request("DELETE", "inventory")
         return ApiResponse(
             status_code=response.status_code,
             headers=dict(response.headers),
