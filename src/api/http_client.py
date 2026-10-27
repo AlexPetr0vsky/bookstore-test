@@ -61,34 +61,6 @@ class HTTPClient:
             data=BookResponse(**response.json())
         )
 
-    def post_inventory(self, data: Dict[str, Any]) -> ApiResponse:
-        response = self._request("POST", "inventory", json=data)
-        if response.status_code != 200:
-            return ApiResponse(
-                status_code=response.status_code,
-                headers=dict(response.headers),
-                data=GeneralErrorResponse(**response.json()) if response.text else None
-            )
-        return ApiResponse(
-            status_code=response.status_code,
-            headers=dict(response.headers),
-            data=response.json()
-        )
-
-    def get_inventory(self, book_id: int) -> ApiResponse:
-        response = self._request("GET", f"inventory/{book_id}")
-        if response.status_code != 200:
-            return ApiResponse(
-                status_code=response.status_code,
-                headers=dict(response.headers),
-                data=GeneralErrorResponse(**response.json()) if response.text else None
-            )
-        return ApiResponse(
-            status_code=response.status_code,
-            headers=dict(response.headers),
-            data=InventoryResponse(**response.json())
-        )
-
     def post_order(self, data: Dict[str, Any]) -> ApiResponse:
         response = self._request("POST", "orders", json=data)
 

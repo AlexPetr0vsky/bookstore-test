@@ -1,7 +1,10 @@
 from typing import Any, Callable, Generator
 
+import grpc
 import pytest
 import logging
+
+from src.grpc.grpc_client import GrpcClient
 from src.api.config import api_config
 from src.api.http_client import HTTPClient
 from src.utils.factory import BookFactory
@@ -12,6 +15,11 @@ logger = logging.getLogger(__name__)
 @pytest.fixture(scope="session")
 def api_client():
     return HTTPClient(api_config.API_URL)
+
+
+@pytest.fixture(scope="session")
+def grpc_client():
+    return GrpcClient(host="localhost", port=50051)
 
 
 @pytest.fixture(autouse=True)
@@ -36,3 +44,10 @@ def create_books(api_client: HTTPClient) -> Callable[..., list[Any]]:
         return books
 
     return _create_books
+
+
+@pytest.fixture(scope="session")
+def grpc_channel():
+    channel = grpc.insecure_channel("localhost:50051")
+    yield channel
+    channel.close()
